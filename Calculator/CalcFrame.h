@@ -37,6 +37,9 @@ private:
 	wxButton* button_bin = nullptr;
 	wxButton* button_hex = nullptr;
 
+	// Text box for Value
+	wxTextCtrl* textbox_value = nullptr;
+
 
 
 	
