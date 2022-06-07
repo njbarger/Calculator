@@ -8,6 +8,8 @@ private:
 	int screenWidth = 1500;
 	int screenHeight = 1650;
 
+	wxSizer* sizer = nullptr;
+
 	// Buttons for all numbers
 	wxButton* button_num1 = nullptr;
 	wxButton* button_num2 = nullptr;

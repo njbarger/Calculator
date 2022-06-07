@@ -16,7 +16,9 @@ CalcMain::~CalcMain()
 bool CalcMain::OnInit()
 {
 	mainWindow = new CalcFrame();
-	mainWindow->Show(true);
+	mainWindow->SetMaxClientSize(wxSize(500, 570));
+	mainWindow->SetMinClientSize(wxSize(500, 570));
+	mainWindow->Show();
 
 	return true;
 }
