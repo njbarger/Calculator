@@ -2,11 +2,11 @@
 #include <iostream>
 
 
-CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator",wxPoint(750, 150), wxSize(510, 610))
+CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", wxPoint(750, 150), wxSize(510, 610))
 {
 	// Initialize all buttons
 	// Nums
-	button_num0 = new wxButton(this, wxID_ANY, "0", wxPoint(250, 475), wxSize(75,75));
+	button_num0 = new wxButton(this, wxID_ANY, "0", wxPoint(250, 475), wxSize(75, 75));
 	button_num1 = new wxButton(this, wxID_ANY, "1", wxPoint(170, 395), wxSize(75, 75));
 	button_num2 = new wxButton(this, wxID_ANY, "2", wxPoint(250, 395), wxSize(75, 75));
 	button_num3 = new wxButton(this, wxID_ANY, "3", wxPoint(330, 395), wxSize(75, 75));
@@ -42,8 +42,9 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator",wx
 	// Text-box for Value
 	textbox_value = new wxTextCtrl(this, wxID_ANY, " Value goes here ", wxPoint(10, 10), wxSize(475, 125));
 	// redirect to std::cout		// redirects until end of scopew
-	wxStreamToTextRedirector redirect(textbox_value);
-	std::cout << "\nTextbox changed correctly..." << std::endl;
+	/*wxStreamToTextRedirector redirect(textbox_value);
+	textbox_value->Clear();
+	std::cout << "\nTextbox changed correctly..." << std::endl;*/
 }
 CalcFrame::~CalcFrame()
 {
