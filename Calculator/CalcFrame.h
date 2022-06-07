@@ -5,6 +5,9 @@ class CalcFrame : public wxFrame
 {
 private:
 
+	int screenWidth = 1500;
+	int screenHeight = 1650;
+
 	// Buttons for all numbers
 	wxButton* button_num1 = nullptr;
 	wxButton* button_num2 = nullptr;
@@ -24,6 +27,7 @@ private:
 	wxButton* button_div = nullptr;
 	wxButton* button_mod = nullptr;
 	wxButton* button_equals = nullptr;
+	wxButton* button_parenth = nullptr;
 
 	// Button for negate
 	wxButton* button_negative = nullptr;
