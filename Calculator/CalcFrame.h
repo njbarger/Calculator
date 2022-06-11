@@ -12,7 +12,12 @@ private:
 	int screenWidth = 510;
 	int screenHeight = 610;
 
-	wxSizer* sizer = nullptr;
+	// bool for if textbox should clear or not
+	bool doClear = true;
+	// bool for if parenthesis start or finish
+	bool openParenth = true;
+	// bool for if enter was last pressed
+	bool calculated = false;
 
 	// Buttons for all numbers
 	wxButton* button_num1 = nullptr;
@@ -51,8 +56,10 @@ private:
 	wxTextCtrl* textbox_value = nullptr;
 
 
+	// Button Functions
+	// numbers
+	void OnButtonClicked(wxCommandEvent& evt);
 
-	
-	//wxDECLARE_EVENT_TABLE();
+	wxDECLARE_EVENT_TABLE();
 };
 
