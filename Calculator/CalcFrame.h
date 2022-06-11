@@ -60,6 +60,5 @@ private:
 	// numbers
 	void OnButtonClicked(wxCommandEvent& evt);
 
-	wxDECLARE_EVENT_TABLE();
 };
 

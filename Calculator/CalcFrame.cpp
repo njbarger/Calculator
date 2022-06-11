@@ -1,13 +1,6 @@
 #include "CalcFrame.h"
 #include <iostream>
 
-// Event table
-wxBEGIN_EVENT_TABLE(CalcFrame, wxFrame)
-EVT_BUTTON(wxID_ANY, CalcFrame::OnButtonClicked)
-wxEND_EVENT_TABLE()
-
-
-
 CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", wxPoint(750, 150), wxSize(510, 610))
 {
 	// Initialize screen settings
@@ -65,7 +58,7 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 
 
 
-
+	Bind(wxEVT_BUTTON, &CalcFrame::OnButtonClicked, this);
 }
 CalcFrame::~CalcFrame()
 {
