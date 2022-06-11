@@ -7,8 +7,6 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 	this->SetSize(screenWidth, screenHeight);
 	this->SetBackgroundColour(*wxWHITE);
 
-
-
 	// Initialize all buttons
 	// Nums
 
@@ -68,6 +66,8 @@ CalcFrame::~CalcFrame()
 void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 {
 	int id = evt.GetId();
+
+
 	// Numbers
 	if (id < 10)
 	{
@@ -86,7 +86,6 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	// operators
 	else if (id >= 11 && id <= 17)
 	{
-		char symbol;
 		switch (id)
 		{
 		default:
@@ -180,3 +179,4 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		textbox_value->Clear();
 	}
 }
+
