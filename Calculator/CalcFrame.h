@@ -3,10 +3,14 @@
 
 class CalcFrame : public wxFrame
 {
+public:
+	CalcFrame();
+	~CalcFrame();
+
 private:
 
-	int screenWidth = 1500;
-	int screenHeight = 1650;
+	int screenWidth = 510;
+	int screenHeight = 610;
 
 	wxSizer* sizer = nullptr;
 
@@ -49,10 +53,6 @@ private:
 
 
 	
-
-
-public:
-	CalcFrame();
-	~CalcFrame();
+	//wxDECLARE_EVENT_TABLE();
 };
 
