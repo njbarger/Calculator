@@ -10,27 +10,29 @@ public:
 	ButtonFactory();
 	~ButtonFactory();
 
+	void CheckEventId(int id);
 
+	wxButton* CreateNumButton(wxWindow* parent, int idNum, const char* label, wxPoint point);
 
-	wxButton* CreateNumButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
+	void CreateNumButtonArray(wxWindow* parent, wxButton** buttonArray);
 	
-	wxButton* CreateAddButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateSubButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateMultButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateDivButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateModuloButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateEqualsButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateParenthButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
+	wxButton* CreateAddButton(wxWindow* parent);
+	wxButton* CreateSubButton(wxWindow* parent);
+	wxButton* CreateMultButton(wxWindow* parent);
+	wxButton* CreateDivButton(wxWindow* parent);
+	wxButton* CreateModuloButton(wxWindow* parent);
+	wxButton* CreateEqualsButton(wxWindow* parent);
+	wxButton* CreateParenthButton(wxWindow* parent);
 			
-	wxButton* CreateNegativeButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
+	wxButton* CreateNegativeButton(wxWindow* parent);
 			
-	wxButton* CreateClearButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateClearEntryButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
+	wxButton* CreateClearButton(wxWindow* parent);
+	wxButton* CreateClearEntryButton(wxWindow* parent);
 			
-	wxButton* CreateDecButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateBinButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
-	wxButton* CreateHexButton(wxWindow* parent, int idNum, const char* label, wxPoint point, wxSize size);
+	wxButton* CreateDecButton(wxWindow* parent);
+	wxButton* CreateBinButton(wxWindow* parent);
+	wxButton* CreateHexButton(wxWindow* parent);
 
-
+	
 };
 

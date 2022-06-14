@@ -19,6 +19,8 @@ private:
 	// bool for if enter was last pressed
 	bool calculated = false;
 
+	wxButton* buttonArray[10];
+
 	// Buttons for all numbers
 	wxButton* button_num1 = nullptr;
 	wxButton* button_num2 = nullptr;
