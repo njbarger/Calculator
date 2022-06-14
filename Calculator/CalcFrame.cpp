@@ -21,6 +21,8 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 	button_num8 = new wxButton(this, 8, "8", wxPoint(250, 235), wxSize(75, 75));
 	button_num9 = new wxButton(this, 9, "9", wxPoint(330, 235), wxSize(75, 75));
 
+
+
 	// Negation
 	button_negative = new wxButton(this, 10, "-(x)", wxPoint(330, 475), wxSize(75, 75));
 
@@ -55,7 +57,7 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 
 
 
-
+	// Bind any button press to OnButtonClicked, where button id is checked
 	Bind(wxEVT_BUTTON, &CalcFrame::OnButtonClicked, this);
 }
 CalcFrame::~CalcFrame()
@@ -72,6 +74,8 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	if (id < 10)
 	{
 		(*textbox_value) << id;
+
+		// Add number to currValue AddToValue(id);
 	}
 
 	// Negation
@@ -80,7 +84,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		// Negation logic, will need to check textbox_value for int value
 		(*textbox_value) << "(next entered value is now negative)  -";
 
-
+		// MakeNegative(currValue) { 0 - (currValue) }
 	}
 
 	// operators
@@ -95,11 +99,15 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		case 11:
 			textbox_value->Clear();
 			(*textbox_value) << '=' << " (Insert Answer Here) ";
+
+			// Equals(currValue) { return math }
+
 			break;
 
 		// +
 		case 12:
 			(*textbox_value) << '+';
+
 			break;
 
 		// -
