@@ -14,6 +14,7 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 	ButtonFactory buttonFactory;
 
 	// Numbers
+
 	buttonFactory.CreateNumButtonArray(this, buttonArray);
 
 	// Negation
