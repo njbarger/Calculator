@@ -140,7 +140,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	}
 
 	// Bin/Dec/Hex
-	else if (id >= 18 || id <= 20)
+	else if (id >= 18 && id <= 20)
 	{
 		textbox_value->Clear();
 		switch (id)
