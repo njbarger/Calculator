@@ -5,9 +5,9 @@ class CalcProcessor
 {
 private:
 	static CalcProcessor* _processor;
-	float baseNumber = 0.0f;
+	int baseNumber = 0;
+	int prevNumber = 0;
 	std::string strVal = "";
-	std::vector<std::string> currVals;
 	CalcProcessor() {} // sets constructor private so only one instance.
 
 public:
@@ -18,12 +18,26 @@ public:
 		else
 			return _processor;
 	}
+	std::string GetStrVal() {
+		return strVal;
+	}
+	void SetNewValue() {
+		prevNumber = baseNumber;
+		baseNumber = 0;
+	}
 
-	void SetBaseNumber(float number) {	// Set the number value
+
+	void SetBaseNumber(int number) {	// Set the number value
 		baseNumber = number;
 	}
-	void AddToCurrVals(std::string currVal) {
-		currVals.push_back(currVal);
+	int GetBaseNumber() {
+		return baseNumber;
+	}
+	void SetPrevNumber(int number) {
+		prevNumber = number;
+	}
+	int GetPrevNumber() {
+		return prevNumber;
 	}
 	CalcProcessor(CalcProcessor& other) = delete;					// makes it so any copies sends an error so no chance of creating duplicate
 	void operator=(const CalcProcessor& other) = delete;		// makes it so any copies sends an error so no chance of creating duplicate
@@ -69,10 +83,9 @@ public:
 
 	std::string GetBin() {
 		std::string result = "";
-		int number = (int)baseNumber;
-		int mod = number % 3;
+		int number = baseNumber;
 		for (int i = 0; i < 32; i++) {
-			if (mod == 0) {
+			if (number % 2 == 0) {
 				result = "0" + result;
 			}
 			else {
@@ -86,7 +99,16 @@ public:
 
 	void AddNumberToStringValue(std::string strNumToAdd) {
 		strVal = strVal + strNumToAdd;
-		baseNumber = std::stoi(strVal);
+		if (prevNumber > 0) {
+			std::string tempStr = strVal;
+			for (int i = 0; i < std::to_string(prevNumber).length(); i++) {
+				tempStr.erase(0, 1);
+			}
+			baseNumber = std::stoi(tempStr);
+		}
+		else {
+			baseNumber = std::stoi(strVal);
+		}
 	}
 	void AddCharToStringValue(char charToAdd) {
 		strVal = strVal + charToAdd;
@@ -118,6 +140,20 @@ public:
 	void Equal() {
 
 	}
+	void Clear() {
+		baseNumber = 0;
+		prevNumber = 0;
+		strVal = "0";
+	}
+	void ClearEntry() {
+		std::string numStr = std::to_string(baseNumber);
+		for (int i = 0; i < numStr.length() + 1; i++) {
+			strVal.pop_back();
+		}
+		baseNumber = prevNumber;
+
+	}
 
 };
 
+CalcProcessor* CalcProcessor::_processor = nullptr;

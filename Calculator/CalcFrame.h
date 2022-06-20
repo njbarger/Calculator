@@ -61,6 +61,5 @@ private:
 	// Button Functions
 	// numbers
 	void OnButtonClicked(wxCommandEvent& evt);
-
 };
 

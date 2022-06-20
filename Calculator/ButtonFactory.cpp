@@ -130,15 +130,15 @@ wxButton* ButtonFactory::CreateNegativeButton(wxWindow* parent)
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateClearButton(wxWindow* parent)
-{
-	wxButton* temp = new wxButton(parent, 22, "Clear", wxPoint(10, 475), wxSize(235, 75));
-	return temp;
-}
-
 wxButton* ButtonFactory::CreateClearEntryButton(wxWindow* parent)
 {
 	wxButton* temp = new wxButton(parent, 21, "CE", wxPoint(10, 395), wxSize(150, 75));
+	return temp;
+}
+
+wxButton* ButtonFactory::CreateClearButton(wxWindow* parent)
+{
+	wxButton* temp = new wxButton(parent, 22, "Clear", wxPoint(10, 475), wxSize(235, 75));
 	return temp;
 }
 

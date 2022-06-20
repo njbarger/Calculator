@@ -1,9 +1,12 @@
 #include "CalcFrame.h"
 #include "ButtonFactory.h"
+#include "CalcProcessor.h"
 #include <iostream>
+#
 
 CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", wxPoint(750, 150), wxSize(510, 610))
 {
+	
 	// Initialize screen settings
 	this->SetSize(screenWidth, screenHeight);
 	this->SetBackgroundColour(*wxWHITE);
@@ -39,16 +42,9 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 	button_clear = buttonFactory.CreateClearButton(this);
 
 	// Text-box for Value
-	textbox_value = new wxTextCtrl(this, 23, " ", wxPoint(10, 10), wxSize(475, 125), (long)wxTE_RIGHT);
+	textbox_value = new wxTextCtrl(this, 23, "0", wxPoint(10, 10), wxSize(475, 125), (long)wxTE_RIGHT);
 	textbox_value->SetExtraStyle((long)wxHSCROLL);
 	textbox_value->SetExtraStyle((long)wxTE_READONLY);
-
-	// redirect to std::cout		// redirects until end of scopew
-	//wxStreamToTextRedirector redirect(textbox_value);
-	textbox_value->Clear();
-
-
-
 
 	// Bind any button press to OnButtonClicked, where button id is checked
 	Bind(wxEVT_BUTTON, &CalcFrame::OnButtonClicked, this);
@@ -60,15 +56,16 @@ CalcFrame::~CalcFrame()
 
 void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 {
+	textbox_value->Clear();
+	CalcProcessor* processor = CalcProcessor::GetInstance();
 	int id = evt.GetId();
-
 
 	// Numbers
 	if (id < 10)
 	{
-		(*textbox_value) << id;
-
 		// Add number to currValue AddToValue(id);
+		processor->AddNumberToStringValue(std::to_string(id));
+		(*textbox_value) << processor->GetStrVal();
 	}
 
 	// Negation
@@ -99,40 +96,54 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 
 			// +
 		case 12:
-			(*textbox_value) << '+';
-
+			//(*textbox_value) << '+';
+			processor->SetNewValue();
+			processor->AddCharToStringValue('+');
+			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// -
 		case 13:
-			(*textbox_value) << '-';
+			processor->SetNewValue();
+			processor->AddCharToStringValue('-');
+			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// *
 		case 14:
-			(*textbox_value) << '*';
+			processor->SetNewValue();
+			processor->AddCharToStringValue('*');
+			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// /
 		case 15:
-			(*textbox_value) << '/';
+			processor->SetNewValue();
+			processor->AddCharToStringValue('/');
+			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// %
 		case 16:
-			(*textbox_value) << '%';
+			processor->SetNewValue();
+			processor->AddCharToStringValue('%');
+			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// ( )
 		case 17:
 			if (openParenth)
 			{
-				(*textbox_value) << '(';
+				processor->SetNewValue();
+				processor->AddCharToStringValue('(');
+				(*textbox_value) << processor->GetStrVal();
 				openParenth = false;
 			}
 			else
 			{
-				(*textbox_value) << ')';
+				processor->SetNewValue();
+				processor->AddCharToStringValue(')');
+				(*textbox_value) << processor->GetStrVal();
 				openParenth = true;
 			}
 			break;
@@ -140,7 +151,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	}
 
 	// Bin/Dec/Hex
-	else if (id >= 18 || id <= 20)
+	else if (id >= 18 && id <= 20)
 	{
 		textbox_value->Clear();
 		switch (id)
@@ -148,13 +159,13 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		default:
 			break;
 		case 18:
-			(*textbox_value) << "(Value was converted to decimal)";
+			(*textbox_value) << processor->GetDec();
 			break;
 		case 19:
-			(*textbox_value) << "(Value was converted to binary)";
+			(*textbox_value) << processor->GetBin();
 			break;
 		case 20:
-			(*textbox_value) << "(Value was converted to hexidecimal)";
+			(*textbox_value) << processor->GetHex();
 			break;
 
 		}
@@ -164,20 +175,20 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	else if (id == 21)
 	{
 		// Keep recorded values first
+		processor->ClearEntry();
 
-
-		// clear textbox
-		textbox_value->Clear();
+		// update textbox
+		(*textbox_value) << processor->GetStrVal();
 	}
 
 	// Clear
 	else if (id == 22)
 	{
 		// Clear recorded values
-
+		processor->Clear();
 
 		// Clear textbox
-		textbox_value->Clear();
+		(*textbox_value) << processor->GetStrVal();
 	}
 }
 
