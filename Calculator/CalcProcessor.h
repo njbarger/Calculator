@@ -53,6 +53,13 @@ public:
 	}
 
 	float ConvertEquationStringToTotal(std::string currStr) {
+		std::string negCheck = currStr;
+		if (negCheck[0] == '-')
+		{
+			negCheck.erase(0, 1);
+			currStr = negCheck;
+		}
+
 		std::vector<float> parenthNums;
 		bool inParenth = false;
 		std::string tempParenthNum;
@@ -61,11 +68,13 @@ public:
 		std::string tempNum = "";
 
 		std::vector<char> operands;
+			
 		for (int i = 0; i < currStr.size(); i++) {
 			if (currStr[i] == '+' || currStr[i] == '-' ||
 				currStr[i] == '*' || currStr[i] == '/' ||
 				currStr[i] == '%' || currStr[i] == '(' ||
 				currStr[i] == ')') {
+
 
 				if (currStr[i] == '(') {
 					inParenth = true;
@@ -235,9 +244,25 @@ public:
 		operandVec.push_back(charToAdd);
 	}
 	void MakeNegative() {
-		//baseNumber = -1 * baseNumber;
-		strVal = std::to_string(-1 * (ConvertEquationStringToTotal(strVal)));
+		std::string negCheck = GetStrVal();
+		if (negCheck[0] == '-')
+		{
+			negCheck.erase(0, 1);
+			SetStrVal(negCheck);
+		}
+		else {
+			float floatCompare = ConvertEquationStringToTotal(GetStrVal());
+			if (floatCompare == (int)floatCompare) {
+				SetStrVal(std::to_string(-1 * (int)ConvertEquationStringToTotal(GetStrVal())));
+			}
+			else
+			{
+				SetStrVal(std::to_string(-1 * (ConvertEquationStringToTotal(GetStrVal()))));
+			}
+		}
 	}
+
+
 	/*void Add() {
 
 	}
@@ -273,7 +298,7 @@ public:
 				strVal[i] == '*' || strVal[i] == '/' ||
 				strVal[i] == '%' || strVal[i] == '(' ||
 				strVal[i] == ')') {
-				
+
 				strVal.pop_back();
 				break;
 			}

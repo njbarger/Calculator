@@ -29,7 +29,7 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 	button_mult = buttonFactory.CreateMultButton(this);
 	button_div = buttonFactory.CreateDivButton(this);
 	button_mod = buttonFactory.CreateModuloButton(this);
-	button_parenth = buttonFactory.CreateParenthButton(this);
+	//button_parenth = buttonFactory.CreateParenthButton(this);
 	button_decimalPoint = buttonFactory.CreateDecimalPointButton(this);
 
 	// Dec/Bin/Hex
@@ -82,19 +82,17 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	else if (id == 10)
 	{
 		// Negation logic, will need to check textbox_value for int value
+		processor->CheckForOnlyZero();
+		processor->CheckForRecentOperand();
 		processor->MakeNegative();
 		(*textbox_value) << processor->GetStrVal();
-
-		// MakeNegative(currValue) { 0 - (currValue) }
 	}
 
 	// operators
 	else if (id >= 11 && id <= 17)
 	{
 		float floatCompare;
-		if (processor->GetStrVal() == "") {
-			processor->SetStrVal("0");
-		}
+		processor->CheckForOnlyZero();
 		processor->CheckForRecentOperand();
 
 		switch (id)
@@ -104,6 +102,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 
 			// =
 		case 11:
+			processor->CheckForRecentOperand();
 			floatCompare = processor->ConvertEquationStringToTotal(processor->GetStrVal());
 			if (floatCompare == (int)floatCompare) {
 				processor->SetStrVal(std::to_string((int)processor->ConvertEquationStringToTotal(processor->GetStrVal())));
@@ -112,7 +111,6 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			{
 				processor->SetStrVal(std::to_string(processor->ConvertEquationStringToTotal(processor->GetStrVal())));
 			}
-			calculated = true;
 			break;
 
 			// +
@@ -161,6 +159,8 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	// Bin/Dec/Hex
 	else if (id >= 18 && id <= 20)
 	{
+		processor->CheckForOnlyZero();
+		processor->CheckForRecentOperand();
 		textbox_value->Clear();
 		switch (id)
 		{
