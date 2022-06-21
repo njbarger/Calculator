@@ -49,6 +49,10 @@ public:
 		if (strVal == "0") {
 			return true;
 		}
+		else if (strVal == "") {
+			SetStrVal("0");
+			return true;
+		}
 		return false;
 	}
 
@@ -68,7 +72,7 @@ public:
 		std::string tempNum = "";
 
 		std::vector<char> operands;
-			
+
 		for (int i = 0; i < currStr.size(); i++) {
 			if (currStr[i] == '+' || currStr[i] == '-' ||
 				currStr[i] == '*' || currStr[i] == '/' ||
@@ -228,16 +232,6 @@ public:
 
 	void AddNumberToStringValue(std::string strNumToAdd) {
 		strVal = strVal + strNumToAdd;
-		/*if (prevNumber > 0) {
-			std::string tempStr = strVal;
-			for (int i = 0; i < std::to_string(prevNumber).length(); i++) {
-				tempStr.erase(0, 1);
-			}
-			baseNumber = std::stoi(tempStr);
-		}
-		else {
-			baseNumber = std::stoi(strVal);
-		}*/
 	}
 	void AddCharToStringValue(char charToAdd) {
 		strVal = strVal + charToAdd;
@@ -261,29 +255,6 @@ public:
 			}
 		}
 	}
-
-
-	/*void Add() {
-
-	}
-	void Sub() {
-
-	}
-	void Mult() {
-
-	}
-	void Div() {
-
-	}
-	void Mod() {
-
-	}
-	void OpenParenth() {
-
-	}
-	void CloseParenth() {
-
-	*/
 	int Equals() {
 		int result = ConvertEquationStringToTotal(strVal);
 		return result;
@@ -292,20 +263,25 @@ public:
 		strVal = "0";
 	}
 	void ClearEntry() {
-		for (int i = strVal.size() - 1; i >= 0; i--)
-		{
-			if (strVal[i] == '+' || strVal[i] == '-' ||
-				strVal[i] == '*' || strVal[i] == '/' ||
-				strVal[i] == '%' || strVal[i] == '(' ||
-				strVal[i] == ')') {
-
-				strVal.pop_back();
-				break;
-			}
-			else
+		if (!CheckForOnlyZero()) {
+			for (int i = strVal.size() - 1; i >= 0; i--)
 			{
-				strVal.pop_back();
+				if (strVal[i] == '+' || strVal[i] == '-' ||
+					strVal[i] == '*' || strVal[i] == '/' ||
+					strVal[i] == '%' || strVal[i] == '(' ||
+					strVal[i] == ')') {
+
+					strVal.pop_back();
+					break;
+				}
+				else
+				{
+					strVal.pop_back();
+				}
 			}
+		}
+		else {
+			strVal = "0";
 		}
 
 	}

@@ -43,8 +43,6 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 
 	// Text-box for Value
 	textbox_value = new wxTextCtrl(this, 23, "0", wxPoint(10, 10), wxSize(475, 125), (long)wxTE_RIGHT);
-	textbox_value->SetExtraStyle((long)wxHSCROLL);
-	textbox_value->SetExtraStyle((long)wxTE_READONLY);
 
 	// Bind any button press to OnButtonClicked, where button id is checked
 	Bind(wxEVT_BUTTON, &CalcFrame::OnButtonClicked, this);
@@ -59,7 +57,18 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	textbox_value->Clear();
 	CalcProcessor* processor = CalcProcessor::GetInstance();
 	int id = evt.GetId();
+	if (calculated && id < 10)
+	{
+		if (id < 10)
+		{
+			processor->Clear();
+			calculated = false;
+		}
+		if (id > 10 && id < 18)
+		{
 
+		}
+	}
 
 	if (processor->CheckForOnlyZero()) {
 		textbox_value->Clear();
@@ -69,10 +78,6 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	// Numbers
 	if (id < 10)
 	{
-		if (calculated) {
-			processor->SetStrVal("");
-			calculated = false;
-		}
 		// Add number to currValue AddToValue(id);
 		processor->AddNumberToStringValue(std::to_string(id));
 		(*textbox_value) << processor->GetStrVal();
@@ -91,6 +96,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	// operators
 	else if (id >= 11 && id <= 17)
 	{
+		calculated = false;
 		float floatCompare;
 		processor->CheckForOnlyZero();
 		processor->CheckForRecentOperand();
@@ -111,6 +117,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			{
 				processor->SetStrVal(std::to_string(processor->ConvertEquationStringToTotal(processor->GetStrVal())));
 			}
+			calculated = true;
 			break;
 
 			// +
@@ -162,12 +169,18 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		processor->CheckForOnlyZero();
 		processor->CheckForRecentOperand();
 		textbox_value->Clear();
+		float decVal = processor->GetDec();
 		switch (id)
 		{
 		default:
 			break;
 		case 18:
-			(*textbox_value) << processor->GetDec();
+			if (decVal == (int)decVal) {
+				(*textbox_value) << (int)decVal;
+			}
+			else {
+				(*textbox_value) << decVal;
+			}
 			break;
 		case 19:
 			(*textbox_value) << processor->GetBin();
@@ -198,6 +211,8 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		// Clear textbox
 		(*textbox_value) << processor->GetStrVal();
 	}
+
+	// Decimal Point
 	else if (id == 23)
 	{
 		processor->AddCharToStringValue('.');
