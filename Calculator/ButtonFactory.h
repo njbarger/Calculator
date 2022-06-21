@@ -25,6 +25,8 @@ public:
 	wxButton* CreateParenthButton(wxWindow* parent);
 			
 	wxButton* CreateNegativeButton(wxWindow* parent);
+
+	wxButton* CreateDecimalPointButton(wxWindow* parent);
 			
 	wxButton* CreateClearButton(wxWindow* parent);
 	wxButton* CreateClearEntryButton(wxWindow* parent);
