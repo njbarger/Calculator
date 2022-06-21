@@ -99,7 +99,6 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		calculated = false;
 		float floatCompare;
 		processor->CheckForOnlyZero();
-		processor->CheckForRecentOperand();
 
 		switch (id)
 		{
@@ -122,32 +121,39 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 
 			// +
 		case 12:
-			//(*textbox_value) << '+';
+			processor->CheckForRecentOperand();
 			processor->AddCharToStringValue('+');
 			break;
 
 			// -
 		case 13:
+			processor->CheckForRecentOperand();
 			processor->AddCharToStringValue('-');
 			break;
 
 			// *
 		case 14:
+			processor->CheckForRecentOperand();
 			processor->AddCharToStringValue('*');
 			break;
 
 			// /
 		case 15:
+			processor->CheckForRecentOperand();
 			processor->AddCharToStringValue('/');
 			break;
 
 			// %
 		case 16:
+			processor->CheckForRecentOperand();
 			processor->AddCharToStringValue('%');
 			break;
 
 			// ( )
 		case 17:
+			if (processor->CheckForOnlyZero()) {
+				processor->SetStrVal("");
+			}
 			if (openParenth)
 			{
 				processor->AddCharToStringValue('(');
@@ -155,6 +161,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			}
 			else
 			{
+				processor->CheckForRecentOperand();
 				processor->AddCharToStringValue(')');
 				openParenth = true;
 			}

@@ -38,8 +38,7 @@ public:
 	void CheckForRecentOperand() {
 		if (strVal.back() == '+' || strVal.back() == '-' ||
 			strVal.back() == '*' || strVal.back() == '/' ||
-			strVal.back() == '%' || strVal.back() == '(' ||
-			strVal.back() == ')')
+			strVal.back() == '%')
 		{
 			strVal.pop_back();
 		}
@@ -57,55 +56,73 @@ public:
 	}
 
 	float ConvertEquationStringToTotal(std::string currStr) {
-		std::vector<float> parenthNums;
 		bool inParenth = false;
-		std::string tempParenthNum;
+		float tempParenthNum = 0.0f;
+		std::string tempParenthNumStr;
 
 		std::vector<float> nums;
-		std::string tempNum = "";
+		std::string tempNumStr = "";
 
 		std::vector<char> operands;
 
 		for (int i = 0; i < currStr.size(); i++) {
 
 			if (i == 0 && currStr[i] == '-') {
-				tempNum.push_back(currStr[i]);
+				tempNumStr.push_back(currStr[i]);
 				i++;
 			}
 			if (currStr[i] == '+' || currStr[i] == '-' ||
 				currStr[i] == '*' || currStr[i] == '/' ||
-				currStr[i] == '%' || currStr[i] == '(' ||
-				currStr[i] == ')') {
+				currStr[i] == '%' || currStr[i] == '(') {
 
-				
+
 				if (currStr[i] == '(') {
+					int numOfOpenParenth = 1;
+					int numOfCloseParenth = 0;
+					for (int j = i + 1; j < currStr.size(); j++) {
+						if (currStr[j] == '(') {
+							numOfOpenParenth++;
+							continue;
+						}
+						if (currStr[j] == ')')
+						{
+							numOfCloseParenth++;
+							if (numOfOpenParenth == numOfCloseParenth) {
+								tempParenthNum = ConvertEquationStringToTotal(tempParenthNumStr);
+							}
+						}
+						tempParenthNumStr = tempParenthNumStr + currStr[j];
+					}
+
+
+					if (i != 0) {
+
+						if (!currStr[i - 1] == '+' || !currStr[i - 1] == '-' ||
+							!currStr[i - 1] == '*' || !currStr[i - 1] == '/' ||
+							!currStr[i - 1] == '%') {
+
+							operands.push_back('*');
+						}
+						else {
+							nums.push_back(ConvertEquationStringToTotal(tempNumStr));
+							operands.push_back(currStr[i]);
+						}
+					}
 					inParenth = true;
-				}
-				else if (inParenth && currStr[i] != '(')
-				{
-					tempParenthNum = tempParenthNum + currStr[i];
-				}
-				else if (currStr[i] == ')')
-				{
-					nums.push_back(ConvertEquationStringToTotal(tempParenthNum));
-					inParenth = false;
+					continue;
 				}
 				else {
-					nums.push_back(std::stof(tempNum));
-					tempNum = "";
+					nums.push_back(std::stof(tempNumStr));
+					tempNumStr = "";
 					operands.push_back(currStr[i]);
 				}
 			}
-			else if (currStr[i + 1] == '(') {
-				nums.push_back(std::stof(tempNum));
-				operands.push_back('*');
-			}
 			else {
-				tempNum = tempNum + currStr[i];
+				tempNumStr = tempNumStr + currStr[i];
 			}
 			if (i == currStr.size() - 1)
 			{
-				nums.push_back(std::stof(tempNum));
+				nums.push_back(std::stof(tempNumStr));
 			}
 		}
 
