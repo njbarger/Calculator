@@ -2,11 +2,10 @@
 #include "ButtonFactory.h"
 #include "CalcProcessor.h"
 #include <iostream>
-#
 
 CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", wxPoint(750, 150), wxSize(510, 610))
 {
-	
+
 	// Initialize screen settings
 	this->SetSize(screenWidth, screenHeight);
 	this->SetBackgroundColour(*wxWHITE);
@@ -31,6 +30,7 @@ CalcFrame::CalcFrame() : wxFrame(nullptr, wxID_ANY, "Baby's First Calculator", w
 	button_div = buttonFactory.CreateDivButton(this);
 	button_mod = buttonFactory.CreateModuloButton(this);
 	button_parenth = buttonFactory.CreateParenthButton(this);
+	button_decimalPoint = buttonFactory.CreateDecimalPointButton(this);
 
 	// Dec/Bin/Hex
 	button_dec = buttonFactory.CreateDecButton(this);
@@ -60,9 +60,19 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	CalcProcessor* processor = CalcProcessor::GetInstance();
 	int id = evt.GetId();
 
+
+	if (processor->CheckForOnlyZero()) {
+		textbox_value->Clear();
+		processor->SetStrVal("");
+
+	}
 	// Numbers
 	if (id < 10)
 	{
+		if (calculated) {
+			processor->SetStrVal("");
+			calculated = false;
+		}
 		// Add number to currValue AddToValue(id);
 		processor->AddNumberToStringValue(std::to_string(id));
 		(*textbox_value) << processor->GetStrVal();
@@ -72,7 +82,8 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	else if (id == 10)
 	{
 		// Negation logic, will need to check textbox_value for int value
-		(*textbox_value) << "(next entered value is now negative)  -";
+		processor->MakeNegative();
+		(*textbox_value) << processor->GetStrVal();
 
 		// MakeNegative(currValue) { 0 - (currValue) }
 	}
@@ -80,6 +91,12 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	// operators
 	else if (id >= 11 && id <= 17)
 	{
+		float floatCompare;
+		if (processor->GetStrVal() == "") {
+			processor->SetStrVal("0");
+		}
+		processor->CheckForRecentOperand();
+
 		switch (id)
 		{
 		default:
@@ -87,67 +104,58 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 
 			// =
 		case 11:
-			textbox_value->Clear();
-			(*textbox_value) << '=' << " (Insert Answer Here) ";
-
-			// Equals(currValue) { return math }
-
+			floatCompare = processor->ConvertEquationStringToTotal(processor->GetStrVal());
+			if (floatCompare == (int)floatCompare) {
+				processor->SetStrVal(std::to_string((int)processor->ConvertEquationStringToTotal(processor->GetStrVal())));
+			}
+			else
+			{
+				processor->SetStrVal(std::to_string(processor->ConvertEquationStringToTotal(processor->GetStrVal())));
+			}
+			calculated = true;
 			break;
 
 			// +
 		case 12:
 			//(*textbox_value) << '+';
-			processor->SetNewValue();
 			processor->AddCharToStringValue('+');
-			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// -
 		case 13:
-			processor->SetNewValue();
 			processor->AddCharToStringValue('-');
-			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// *
 		case 14:
-			processor->SetNewValue();
 			processor->AddCharToStringValue('*');
-			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// /
 		case 15:
-			processor->SetNewValue();
 			processor->AddCharToStringValue('/');
-			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// %
 		case 16:
-			processor->SetNewValue();
 			processor->AddCharToStringValue('%');
-			(*textbox_value) << processor->GetStrVal();
 			break;
 
 			// ( )
 		case 17:
 			if (openParenth)
 			{
-				processor->SetNewValue();
 				processor->AddCharToStringValue('(');
-				(*textbox_value) << processor->GetStrVal();
 				openParenth = false;
 			}
 			else
 			{
-				processor->SetNewValue();
 				processor->AddCharToStringValue(')');
-				(*textbox_value) << processor->GetStrVal();
 				openParenth = true;
 			}
 			break;
 		}
+		(*textbox_value) << processor->GetStrVal();
 	}
 
 	// Bin/Dec/Hex
@@ -188,6 +196,11 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		processor->Clear();
 
 		// Clear textbox
+		(*textbox_value) << processor->GetStrVal();
+	}
+	else if (id == 23)
+	{
+		processor->AddCharToStringValue('.');
 		(*textbox_value) << processor->GetStrVal();
 	}
 }

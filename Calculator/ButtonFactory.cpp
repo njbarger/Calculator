@@ -126,7 +126,13 @@ wxButton* ButtonFactory::CreateParenthButton(wxWindow* parent)
 
 wxButton* ButtonFactory::CreateNegativeButton(wxWindow* parent)
 {
-	wxButton* temp = new wxButton(parent, 10, "-(x)", wxPoint(330, 475), wxSize(75, 75));
+	wxButton* temp = new wxButton(parent, 10, "-(x)", wxPoint(170, 475), wxSize(75, 75));
+	return temp;
+}
+
+wxButton* ButtonFactory::CreateDecimalPointButton(wxWindow* parent)
+{
+	wxButton* temp = new wxButton(parent, 23, " . ", wxPoint(330, 475),wxSize(75,75));
 	return temp;
 }
 
@@ -138,7 +144,7 @@ wxButton* ButtonFactory::CreateClearEntryButton(wxWindow* parent)
 
 wxButton* ButtonFactory::CreateClearButton(wxWindow* parent)
 {
-	wxButton* temp = new wxButton(parent, 22, "Clear", wxPoint(10, 475), wxSize(235, 75));
+	wxButton* temp = new wxButton(parent, 22, "Clear", wxPoint(10, 475), wxSize(150, 75));
 	return temp;
 }
 

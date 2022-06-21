@@ -45,6 +45,9 @@ private:
 	// Button for negate
 	wxButton* button_negative = nullptr;
 
+	// Button for decimal point
+	wxButton* button_decimalPoint = nullptr;
+
 	// Buttons for Clear/Clear entry
 	wxButton* button_clear = nullptr;
 	wxButton* button_clearEntry = nullptr;

@@ -1,16 +1,20 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <sstream>
 class CalcProcessor
 {
 private:
 	static CalcProcessor* _processor;
 	int baseNumber = 0;
 	int prevNumber = 0;
-	std::string strVal = "";
+	std::vector<float> numVec;
+	std::vector<char> operandVec;
+	std::string strVal = "0";
 	CalcProcessor() {} // sets constructor private so only one instance.
 
 public:
+
 	static CalcProcessor* GetInstance() {	// will return static _processor
 		if (_processor == nullptr) {
 			_processor = new CalcProcessor();
@@ -18,37 +22,153 @@ public:
 		else
 			return _processor;
 	}
+
 	std::string GetStrVal() {
 		return strVal;
 	}
-	void SetNewValue() {
-		prevNumber = baseNumber;
-		baseNumber = 0;
+
+	void SetStrVal(std::string newVal) {
+		strVal = newVal;
 	}
 
-
-	void SetBaseNumber(int number) {	// Set the number value
-		baseNumber = number;
-	}
-	int GetBaseNumber() {
-		return baseNumber;
-	}
-	void SetPrevNumber(int number) {
-		prevNumber = number;
-	}
-	int GetPrevNumber() {
-		return prevNumber;
-	}
 	CalcProcessor(CalcProcessor& other) = delete;					// makes it so any copies sends an error so no chance of creating duplicate
+
 	void operator=(const CalcProcessor& other) = delete;		// makes it so any copies sends an error so no chance of creating duplicate
 
-	std::string GetDec() {
-		return std::to_string(baseNumber);
+	void CheckForRecentOperand() {
+		if (strVal.back() == '+' || strVal.back() == '-' ||
+			strVal.back() == '*' || strVal.back() == '/' ||
+			strVal.back() == '%' || strVal.back() == '(' ||
+			strVal.back() == ')')
+		{
+			strVal.pop_back();
+		}
+	}
+
+	bool CheckForOnlyZero() {
+		if (strVal == "0") {
+			return true;
+		}
+		return false;
+	}
+
+	float ConvertEquationStringToTotal(std::string currStr) {
+		std::vector<float> parenthNums;
+		bool inParenth = false;
+		std::string tempParenthNum;
+
+		std::vector<float> nums;
+		std::string tempNum = "";
+
+		std::vector<char> operands;
+		for (int i = 0; i < currStr.size(); i++) {
+			if (currStr[i] == '+' || currStr[i] == '-' ||
+				currStr[i] == '*' || currStr[i] == '/' ||
+				currStr[i] == '%' || currStr[i] == '(' ||
+				currStr[i] == ')') {
+
+				if (currStr[i] == '(') {
+					inParenth = true;
+				}
+				else if (inParenth && currStr[i] != '(')
+				{
+					tempParenthNum = tempParenthNum + currStr[i];
+				}
+				else if (currStr[i] == ')')
+				{
+					nums.push_back(ConvertEquationStringToTotal(tempParenthNum));
+					inParenth = false;
+				}
+				else {
+					nums.push_back(std::stof(tempNum));
+					tempNum = "";
+					operands.push_back(currStr[i]);
+				}
+			}
+			else if (currStr[i + 1] == '(') {
+				nums.push_back(std::stof(tempNum));
+				operands.push_back('*');
+			}
+			else {
+				tempNum = tempNum + currStr[i];
+			}
+			if (i == currStr.size() - 1)
+			{
+				nums.push_back(std::stof(tempNum));
+			}
+		}
+
+		float result = DoMath(nums, operands);
+
+		return result;
+	}
+
+	float DoMath(std::vector<float> numVec, std::vector<char> opVec) {
+		bool dontQuit = true;
+
+		while (dontQuit) {
+			for (int i = 0; i < opVec.size();)
+			{
+				if (opVec[i] == '*' ||
+					opVec[i] == '/' ||
+					opVec[i] == '%')
+				{
+					numVec[i] = DoOperator(opVec[i], numVec[i], numVec[i + 1]);
+					opVec.erase(opVec.begin() + i);
+					numVec.erase(numVec.begin() + i + 1);
+				}
+				else
+					i++;
+			}
+			for (int i = 0; i < opVec.size();)
+			{
+				numVec[i] = DoOperator(opVec[i], numVec[i], numVec[i + 1]);
+				opVec.erase(opVec.begin() + i);
+				numVec.erase(numVec.begin() + i + 1);
+			}
+			if (numVec.size() == 1)
+			{
+				dontQuit = false;
+			}
+		}
+		return (float)numVec[0];
+	}
+
+	float DoOperator(char op, float x, float y)
+	{
+		float result = 0;
+		switch (op)
+		{
+		default:
+			break;
+		case '+':
+			result = x + y;
+			break;
+		case '-':
+			result = x - y;
+			break;
+		case '*':
+			result = x * y;
+			break;
+		case '/':
+			result = x / y;
+			break;
+		case '%':
+			result = (int)x % (int)y;
+			break;
+		}
+
+		return result;
+	}
+
+	float GetDec() {
+		float result = ConvertEquationStringToTotal(strVal);
+		return result;
 	}
 
 	std::string GetHex() {
 		std::string result = "";
-		int number = (int)baseNumber;
+		int number = ConvertEquationStringToTotal(strVal);
 
 		while (number > 0) {
 			int mod = (int)number % 16;
@@ -83,7 +203,7 @@ public:
 
 	std::string GetBin() {
 		std::string result = "";
-		int number = baseNumber;
+		int number = (int)ConvertEquationStringToTotal(strVal);
 		for (int i = 0; i < 32; i++) {
 			if (number % 2 == 0) {
 				result = "0" + result;
@@ -99,7 +219,7 @@ public:
 
 	void AddNumberToStringValue(std::string strNumToAdd) {
 		strVal = strVal + strNumToAdd;
-		if (prevNumber > 0) {
+		/*if (prevNumber > 0) {
 			std::string tempStr = strVal;
 			for (int i = 0; i < std::to_string(prevNumber).length(); i++) {
 				tempStr.erase(0, 1);
@@ -108,13 +228,15 @@ public:
 		}
 		else {
 			baseNumber = std::stoi(strVal);
-		}
+		}*/
 	}
 	void AddCharToStringValue(char charToAdd) {
 		strVal = strVal + charToAdd;
+		operandVec.push_back(charToAdd);
 	}
 	void MakeNegative() {
-		baseNumber = -1 * baseNumber;
+		//baseNumber = -1 * baseNumber;
+		strVal = std::to_string(-1 * (ConvertEquationStringToTotal(strVal)));
 	}
 	/*void Add() {
 
@@ -137,20 +259,29 @@ public:
 	void CloseParenth() {
 
 	*/
-	void Equal() {
-
+	int Equals() {
+		int result = ConvertEquationStringToTotal(strVal);
+		return result;
 	}
 	void Clear() {
-		baseNumber = 0;
-		prevNumber = 0;
 		strVal = "0";
 	}
 	void ClearEntry() {
-		std::string numStr = std::to_string(baseNumber);
-		for (int i = 0; i < numStr.length() + 1; i++) {
-			strVal.pop_back();
+		for (int i = strVal.size() - 1; i >= 0; i--)
+		{
+			if (strVal[i] == '+' || strVal[i] == '-' ||
+				strVal[i] == '*' || strVal[i] == '/' ||
+				strVal[i] == '%' || strVal[i] == '(' ||
+				strVal[i] == ')') {
+				
+				strVal.pop_back();
+				break;
+			}
+			else
+			{
+				strVal.pop_back();
+			}
 		}
-		baseNumber = prevNumber;
 
 	}
 
