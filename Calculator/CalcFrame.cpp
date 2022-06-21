@@ -55,36 +55,37 @@ CalcFrame::~CalcFrame()
 void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 {
 	textbox_value->Clear();
-	CalcProcessor* processor = CalcProcessor::GetInstance();
+	//CalcProcessor* processor = CalcProcessor::GetInstance();
+	IBaseCommand* command = CalcProcessor::GetInstance();
 	int id = evt.GetId();
 	if (calculated && id < 10)
 	{
-		processor->Clear();
+		command->Clear();
 		calculated = false;
 
 	}
 
-	if (processor->CheckForOnlyZero()) {
+	if (command->CheckForOnlyZero()) {
 		textbox_value->Clear();
-		processor->SetStrVal("");
+		command->SetStrVal("");
 
 	}
 	// Numbers
 	if (id < 10)
 	{
 		// Add number to currValue AddToValue(id);
-		processor->AddNumberToStrVal(std::to_string(id));
-		(*textbox_value) << processor->GetStrVal();
+		command->AddNumberToStrVal(std::to_string(id));
+		(*textbox_value) << command->GetStrVal();
 	}
 
 	// Negation
 	else if (id == 10)
 	{
 		// Negation logic, will need to check textbox_value for int value
-		processor->CheckForOnlyZero();
-		processor->CheckForRecentOperand();
-		processor->SetStrVal(processor->MakeNegative());
-		(*textbox_value) << processor->GetStrVal();
+		command->CheckForOnlyZero();
+		command->CheckForRecentOperand();
+		command->SetStrVal(command->MakeNegative());
+		(*textbox_value) << command->GetStrVal();
 	}
 
 	// operators
@@ -92,7 +93,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	{
 		calculated = false;
 		float floatCompare;
-		processor->CheckForOnlyZero();
+		command->CheckForOnlyZero();
 
 		switch (id)
 		{
@@ -101,70 +102,70 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 
 			// =
 		case 11:
-			processor->CheckForRecentOperand();
-			floatCompare = processor->Execute();
+			command->CheckForRecentOperand();
+			floatCompare = command->Execute();
 			if (floatCompare == (int)floatCompare) {
-				processor->SetStrVal(std::to_string((int)floatCompare));
+				command->SetStrVal(std::to_string((int)floatCompare));
 			}
 			else
 			{
-				processor->SetStrVal(std::to_string(floatCompare));
+				command->SetStrVal(std::to_string(floatCompare));
 			}
 			calculated = true;
 			break;
 
 			// +
 		case 12:
-			processor->AddCharToStrVal('+');
+			command->AddCharToStrVal('+');
 			break;
 
 			// -
 		case 13:
-			processor->AddCharToStrVal('-');
+			command->AddCharToStrVal('-');
 			break;
 
 			// *
 		case 14:
-			processor->AddCharToStrVal('*');
+			command->AddCharToStrVal('*');
 			break;
 
 			// /
 		case 15:
-			processor->AddCharToStrVal('/');
+			command->AddCharToStrVal('/');
 			break;
 
 			// %
 		case 16:
-			processor->AddCharToStrVal('%');
+			command->AddCharToStrVal('%');
 			break;
 
 			// ( )
 		case 17:
-			if (processor->CheckForOnlyZero()) {
-				processor->SetStrVal("");
+			if (command->CheckForOnlyZero()) {
+				command->SetStrVal("");
 			}
 			if (openParenth)
 			{
-				processor->AddCharToStrVal('(');
+				command->AddCharToStrVal('(');
 				openParenth = false;
 			}
 			else
 			{
-				processor->AddCharToStrVal(')');
+				command->AddCharToStrVal(')');
 				openParenth = true;
 			}
 			break;
 		}
-		(*textbox_value) << processor->GetStrVal();
+		(*textbox_value) << command->GetStrVal();
 	}
 
 	// Bin/Dec/Hex
 	else if (id >= 18 && id <= 20)
 	{
-		processor->CheckForOnlyZero();
-		processor->CheckForRecentOperand();
+		command->CheckForOnlyZero();
+		command->CheckForRecentOperand();
 		textbox_value->Clear();
-		float decVal = processor->GetDec();
+		float decVal = command->GetDec();
 		switch (id)
 		{
 		default:
@@ -178,10 +179,10 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			}
 			break;
 		case 19:
-			(*textbox_value) << processor->GetBin();
+			(*textbox_value) << command->GetBin();
 			break;
 		case 20:
-			(*textbox_value) << processor->GetHex();
+			(*textbox_value) << command->GetHex();
 			break;
 
 		}
@@ -191,27 +192,27 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	else if (id == 21)
 	{
 		// Keep recorded values first
-		processor->ClearEntry();
+		command->ClearEntry();
 
 		// update textbox
-		(*textbox_value) << processor->GetStrVal();
+		(*textbox_value) << command->GetStrVal();
 	}
 
 	// Clear
 	else if (id == 22)
 	{
 		// Clear recorded values
-		processor->Clear();
+		command->Clear();
 
 		// Clear textbox
-		(*textbox_value) << processor->GetStrVal();
+		(*textbox_value) << command->GetStrVal();
 	}
 
 	// Decimal Point
 	else if (id == 23)
 	{
-		processor->AddCharToStrVal('.');
-		(*textbox_value) << processor->GetStrVal();
+		command->AddCharToStrVal('.');
+		(*textbox_value) << command->GetStrVal();
 	}
 }
 
