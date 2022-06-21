@@ -23,6 +23,7 @@
     <ClInclude Include="CalcFrame.h" />
     <ClInclude Include="CalcMain.h" />
     <ClInclude Include="CalcProcessor.h" />
+    <ClInclude Include="IBaseCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ButtonFactory.cpp" />

@@ -2,7 +2,10 @@
 #include <string>
 #include <vector>
 #include <sstream>
-class CalcProcessor
+
+#include "IBaseCommand.h"
+
+class CalcProcessor : public IBaseCommand
 {
 private:
 	static CalcProcessor* _processor;
@@ -14,6 +17,10 @@ private:
 	CalcProcessor() {} // sets constructor private so only one instance.
 
 public:
+
+	float Execute() {
+		return ConvertEquationStringToTotal(strVal);
+	}
 
 	static CalcProcessor* GetInstance() {	// will return static _processor
 		if (_processor == nullptr) {

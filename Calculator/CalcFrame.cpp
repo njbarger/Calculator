@@ -59,15 +59,9 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	int id = evt.GetId();
 	if (calculated && id < 10)
 	{
-		if (id < 10)
-		{
-			processor->Clear();
-			calculated = false;
-		}
-		if (id > 10 && id < 18)
-		{
+		processor->Clear();
+		calculated = false;
 
-		}
 	}
 
 	if (processor->CheckForOnlyZero()) {
@@ -108,14 +102,14 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			// =
 		case 11:
 			processor->CheckForRecentOperand();
-			floatCompare = processor->ConvertEquationStringToTotal(processor->GetStrVal());
-			if (floatCompare == (int)floatCompare) {
-				processor->SetStrVal(std::to_string((int)floatCompare));
-			}
-			else
-			{
-				processor->SetStrVal(std::to_string(floatCompare));
-			}
+			floatCompare = processor->Execute();
+				if (floatCompare == (int)floatCompare) {
+					processor->SetStrVal(std::to_string((int)floatCompare));
+				}
+				else
+				{
+					processor->SetStrVal(std::to_string(floatCompare));
+				}
 			calculated = true;
 			break;
 
