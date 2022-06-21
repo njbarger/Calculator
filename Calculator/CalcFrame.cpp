@@ -73,7 +73,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	if (id < 10)
 	{
 		// Add number to currValue AddToValue(id);
-		processor->AddNumberToStringValue(std::to_string(id));
+		processor->AddNumberToStrVal(std::to_string(id));
 		(*textbox_value) << processor->GetStrVal();
 	}
 
@@ -103,44 +103,39 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		case 11:
 			processor->CheckForRecentOperand();
 			floatCompare = processor->Execute();
-				if (floatCompare == (int)floatCompare) {
-					processor->SetStrVal(std::to_string((int)floatCompare));
-				}
-				else
-				{
-					processor->SetStrVal(std::to_string(floatCompare));
-				}
+			if (floatCompare == (int)floatCompare) {
+				processor->SetStrVal(std::to_string((int)floatCompare));
+			}
+			else
+			{
+				processor->SetStrVal(std::to_string(floatCompare));
+			}
 			calculated = true;
 			break;
 
 			// +
 		case 12:
-			processor->CheckForRecentOperand();
-			processor->AddCharToStringValue('+');
+			processor->AddCharToStrVal('+');
 			break;
 
 			// -
 		case 13:
-			processor->CheckForRecentOperand();
-			processor->AddCharToStringValue('-');
+			processor->AddCharToStrVal('-');
 			break;
 
 			// *
 		case 14:
-			processor->CheckForRecentOperand();
-			processor->AddCharToStringValue('*');
+			processor->AddCharToStrVal('*');
 			break;
 
 			// /
 		case 15:
-			processor->CheckForRecentOperand();
-			processor->AddCharToStringValue('/');
+			processor->AddCharToStrVal('/');
 			break;
 
 			// %
 		case 16:
-			processor->CheckForRecentOperand();
-			processor->AddCharToStringValue('%');
+			processor->AddCharToStrVal('%');
 			break;
 
 			// ( )
@@ -150,13 +145,12 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			}
 			if (openParenth)
 			{
-				processor->AddCharToStringValue('(');
+				processor->AddCharToStrVal('(');
 				openParenth = false;
 			}
 			else
 			{
-				processor->CheckForRecentOperand();
-				processor->AddCharToStringValue(')');
+				processor->AddCharToStrVal(')');
 				openParenth = true;
 			}
 			break;
@@ -216,7 +210,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 	// Decimal Point
 	else if (id == 23)
 	{
-		processor->AddCharToStringValue('.');
+		processor->AddCharToStrVal('.');
 		(*textbox_value) << processor->GetStrVal();
 	}
 }

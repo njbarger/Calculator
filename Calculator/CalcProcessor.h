@@ -252,10 +252,11 @@ public:
 		return result;
 	}
 
-	void AddNumberToStringValue(std::string strNumToAdd) {
+	void AddNumberToStrVal(std::string strNumToAdd) {
 		strVal = strVal + strNumToAdd;
 	}
-	void AddCharToStringValue(char charToAdd) {
+	void AddCharToStrVal(char charToAdd) {
+		CheckForRecentOperand();
 		strVal = strVal + charToAdd;
 		operandVec.push_back(charToAdd);
 	}
