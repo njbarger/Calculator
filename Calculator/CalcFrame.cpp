@@ -89,7 +89,7 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 		// Negation logic, will need to check textbox_value for int value
 		processor->CheckForOnlyZero();
 		processor->CheckForRecentOperand();
-		processor->MakeNegative();
+		processor->SetStrVal(processor->MakeNegative());
 		(*textbox_value) << processor->GetStrVal();
 	}
 
@@ -111,11 +111,11 @@ void CalcFrame::OnButtonClicked(wxCommandEvent& evt)
 			processor->CheckForRecentOperand();
 			floatCompare = processor->ConvertEquationStringToTotal(processor->GetStrVal());
 			if (floatCompare == (int)floatCompare) {
-				processor->SetStrVal(std::to_string((int)processor->ConvertEquationStringToTotal(processor->GetStrVal())));
+				processor->SetStrVal(std::to_string((int)floatCompare));
 			}
 			else
 			{
-				processor->SetStrVal(std::to_string(processor->ConvertEquationStringToTotal(processor->GetStrVal())));
+				processor->SetStrVal(std::to_string(floatCompare));
 			}
 			calculated = true;
 			break;
