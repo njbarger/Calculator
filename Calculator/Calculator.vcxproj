@@ -24,6 +24,7 @@
     <ClInclude Include="CalcMain.h" />
     <ClInclude Include="CalcProcessor.h" />
     <ClInclude Include="IBaseCommand.h" />
+    <ClInclude Include="SeparateIntoNumsAndOps.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ButtonFactory.cpp" />

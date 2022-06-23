@@ -30,6 +30,9 @@
     <ClInclude Include="IBaseCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SeparateIntoNumsAndOps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CalcMain.cpp">

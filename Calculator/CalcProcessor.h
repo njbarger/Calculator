@@ -4,8 +4,9 @@
 #include <sstream>
 
 #include "IBaseCommand.h"
+#include "SeparateIntoNumsAndOps.h"
 
-class CalcProcessor : public IBaseCommand
+class CalcProcessor
 {
 private:
 	static CalcProcessor* _processor;
@@ -14,13 +15,10 @@ private:
 	std::vector<float> numVec;
 	std::vector<char> operandVec;
 	std::string strVal = "0";
+	SeparateIntoNumsAndOps separator;
 	CalcProcessor() {} // sets constructor private so only one instance.
 
 public:
-
-	float Execute() {
-		return ConvertEquationStringToTotal(strVal);
-	}
 
 	static CalcProcessor* GetInstance() {	// will return static _processor
 		if (_processor == nullptr) {
@@ -63,147 +61,20 @@ public:
 	}
 
 	float ConvertEquationStringToTotal(std::string currStr) {
-		bool inParenth = false;
-		float tempParenthNum = 0.0f;
-		std::string tempParenthNumStr;
 
-		std::vector<float> nums;
-		std::string tempNumStr = "";
-
-		std::vector<char> operands;
-
-		for (int i = 0; i < currStr.size(); i++) {
-
-			if (i == 0 && currStr[i] == '-') {
-				tempNumStr.push_back(currStr[i]);
-				i++;
-			}
-			if (currStr[i] == '+' || currStr[i] == '-' ||
-				currStr[i] == '*' || currStr[i] == '/' ||
-				currStr[i] == '%' || currStr[i] == '(') {
-
-
-				if (currStr[i] == '(') {
-					int numOfOpenParenth = 1;
-					int numOfCloseParenth = 0;
-					for (int j = i + 1; j < currStr.size(); j++) {
-						if (currStr[j] == '(') {
-							numOfOpenParenth++;
-							continue;
-						}
-						if (currStr[j] == ')')
-						{
-							numOfCloseParenth++;
-							if (numOfOpenParenth == numOfCloseParenth) {
-								tempParenthNum = ConvertEquationStringToTotal(tempParenthNumStr);
-							}
-						}
-						tempParenthNumStr = tempParenthNumStr + currStr[j];
-					}
-
-
-					if (i != 0) {
-
-						if (!currStr[i - 1] == '+' || !currStr[i - 1] == '-' ||
-							!currStr[i - 1] == '*' || !currStr[i - 1] == '/' ||
-							!currStr[i - 1] == '%') {
-
-							operands.push_back('*');
-						}
-						else {
-							nums.push_back(ConvertEquationStringToTotal(tempNumStr));
-							operands.push_back(currStr[i]);
-						}
-					}
-					inParenth = true;
-					continue;
-				}
-				else {
-					nums.push_back(std::stof(tempNumStr));
-					tempNumStr = "";
-					operands.push_back(currStr[i]);
-				}
-			}
-			else {
-				tempNumStr = tempNumStr + currStr[i];
-			}
-			if (i == currStr.size() - 1)
-			{
-				nums.push_back(std::stof(tempNumStr));
-			}
-		}
-
-		float result = DoMath(nums, operands);
-
+		float result = separator.Execute(currStr);
 		return result;
 	}
 
-	float DoMath(std::vector<float> numVec, std::vector<char> opVec) {
-		bool dontQuit = true;
-
-		while (dontQuit) {
-			for (int i = 0; i < opVec.size();)
-			{
-				if (opVec[i] == '*' ||
-					opVec[i] == '/' ||
-					opVec[i] == '%')
-				{
-					numVec[i] = DoOperator(opVec[i], numVec[i], numVec[i + 1]);
-					opVec.erase(opVec.begin() + i);
-					numVec.erase(numVec.begin() + i + 1);
-				}
-				else
-					i++;
-			}
-			for (int i = 0; i < opVec.size();)
-			{
-				numVec[i] = DoOperator(opVec[i], numVec[i], numVec[i + 1]);
-				opVec.erase(opVec.begin() + i);
-				numVec.erase(numVec.begin() + i + 1);
-			}
-			if (numVec.size() == 1)
-			{
-				dontQuit = false;
-			}
-		}
-		return (float)numVec[0];
-	}
-
-	float DoOperator(char op, float x, float y)
-	{
-		float result = 0;
-		switch (op)
-		{
-		default:
-			break;
-		case '+':
-			result = x + y;
-			break;
-		case '-':
-			result = x - y;
-			break;
-		case '*':
-			result = x * y;
-			break;
-		case '/':
-			result = x / y;
-			break;
-		case '%':
-			result = (int)x % (int)y;
-			break;
-		}
-
-		return result;
-	}
-
+	
 	float GetDec() {
-		float result = ConvertEquationStringToTotal(strVal);
+		float result = separator.Execute(strVal);
 		return result;
 	}
 
 	std::string GetHex() {
 		std::string result = "";
-		int number = ConvertEquationStringToTotal(strVal);
+		int number = separator.Execute(strVal);
 
 		while (number > 0) {
 			int mod = (int)number % 16;
@@ -238,7 +109,7 @@ public:
 
 	std::string GetBin() {
 		std::string result = "";
-		int number = (int)ConvertEquationStringToTotal(strVal);
+		int number = (int)separator.Execute(strVal);
 		for (int i = 0; i < 32; i++) {
 			if (number % 2 == 0) {
 				result = "0" + result;
@@ -248,7 +119,6 @@ public:
 			}
 			number = number / 2;
 		}
-
 		return result;
 	}
 
