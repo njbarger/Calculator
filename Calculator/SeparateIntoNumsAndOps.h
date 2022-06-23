@@ -28,7 +28,9 @@ public:
 				currStr[i] == '*' || currStr[i] == '/' ||
 				currStr[i] == '%') {
 
-
+				//
+				//    Save for future parenthesis logic
+				//
 				/*if (currStr[i] == '(') {
 					int numOfOpenParenth = 1;
 					int numOfCloseParenth = 0;
