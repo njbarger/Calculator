@@ -110,7 +110,7 @@ public:
 	std::string GetBin() {
 		std::string result = "";
 		int number = (int)separator.Execute(strVal);
-		for (int i = 0; i < 32; i++) {
+		for (int i = 0; i < 16; i++) {
 			if (number % 2 == 0) {
 				result = "0" + result;
 			}

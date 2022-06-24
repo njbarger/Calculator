@@ -16,13 +16,13 @@ void ButtonFactory::CheckEventId(int id)
 
 }
 
-wxButton* ButtonFactory::CreateNumButton(wxWindow* parent, int idNum, const char* label, wxPoint point)
+wxButton* ButtonFactory::CreateNumButton(wxWindow* parent = nullptr, int idNum = 0, const char* label = "0", wxPoint point = wxPoint(0,0))
 {
 	wxButton* temp = new wxButton(parent, idNum, label, point, wxSize(75, 75));
 	return temp;
 }
 
-void ButtonFactory::CreateNumButtonArray(wxWindow* parent, wxButton** buttonArray)
+void ButtonFactory::CreateNumButtonArray(wxWindow* parent = nullptr, wxButton** buttonArray = nullptr)
 {
 	static const char* const numArr[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 	int xCount = 0;
@@ -82,85 +82,85 @@ void ButtonFactory::CreateNumButtonArray(wxWindow* parent, wxButton** buttonArra
 	}
 }
 
-wxButton* ButtonFactory::CreateAddButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateAddButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 12, "+", wxPoint(410, 315), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateSubButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateSubButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 13, "-", wxPoint(410, 235), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateMultButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateMultButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 14, "*", wxPoint(410, 155), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateDivButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateDivButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 15, "/", wxPoint(330, 155), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateModuloButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateModuloButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 16, "%", wxPoint(250, 155), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateEqualsButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateEqualsButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 11, "=", wxPoint(410, 395), wxSize(75, 155));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateParenthButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateParenthButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 17, "( )", wxPoint(170, 155), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateNegativeButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateNegativeButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 10, "-(x)", wxPoint(170, 475), wxSize(75, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateDecimalPointButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateDecimalPointButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 23, " . ", wxPoint(330, 475),wxSize(75,75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateClearEntryButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateClearEntryButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 21, "CE", wxPoint(10, 395), wxSize(150, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateClearButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateClearButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 22, "Clear", wxPoint(10, 475), wxSize(150, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateDecButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateDecButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 18, "Dec", wxPoint(10, 155), wxSize(150, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateBinButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateBinButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 19, "Bin", wxPoint(10, 235), wxSize(150, 75));
 	return temp;
 }
 
-wxButton* ButtonFactory::CreateHexButton(wxWindow* parent)
+wxButton* ButtonFactory::CreateHexButton(wxWindow* parent = nullptr)
 {
 	wxButton* temp = new wxButton(parent, 20, "Hex", wxPoint(10, 315), wxSize(150, 75));
 	return temp;
